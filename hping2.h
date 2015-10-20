@@ -112,6 +112,7 @@
 #define DEFAULT_DPORT	    0	/* default dest. port */
 #define DEFAULT_INITSPORT  -1	/* default initial source port: -1 means random */
 #define DEFAULT_COUNT      -1	/* default packets count: -1 means forever */
+#define DEFAULT_DURATION   -1   /* default execution duration: -1 means forever */
 #define DEFAULT_TTL	   64	/* default ip->ttl value */
 #define DEFAULT_SRCWINSIZE 512	/* default tcp windows size */
 #define DEFAULT_VIRTUAL_MTU 16  /* tiny fragments */

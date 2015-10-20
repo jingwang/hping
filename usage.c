@@ -20,6 +20,7 @@ void	show_usage(void)
 "  -h  --help      show this help\n"
 "  -v  --version   show version\n"
 "  -c  --count     packet count\n"
+"  -d  --duration  duration of execution in seconds, only valid when --flood is specified\n"
 "  -i  --interval  wait (uX for X microseconds, for example -i u1000)\n"
 "      --fast      alias for -i u10000 (10 packets for second)\n"
 "      --faster    alias for -i u1000 (100 packets for second)\n"

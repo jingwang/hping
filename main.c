@@ -133,8 +133,8 @@ int
 	icmp_ip_dstport	= DEFAULT_DPORT,
 	opt_force_icmp  = FALSE,
 	icmp_cksum	= DEFAULT_ICMP_CKSUM,
-	raw_ip_protocol	= DEFAULT_RAW_IP_PROTOCOL;
-
+	raw_ip_protocol	= DEFAULT_RAW_IP_PROTOCOL,
+	duration	= DEFAULT_DURATION;
 char
 	datafilename	[1024],
 	targetname	[1024],
@@ -371,8 +371,24 @@ int main(int argc, char **argv)
 	if (opt_flood) {
 		fprintf(stderr,
 			"hping in flood mode, no replies will be shown\n");
-		while (1) {
-			send_packet(0);
+		if(duration != -1 && duration > 0) {
+			time_t endwait;
+			time_t start = time(NULL);
+			endwait = start + duration;
+			printf("running flood mode for %d seconds, starting at : %s", duration, ctime(&start));
+
+			while (start < endwait) {
+				send_packet(0); 
+				start = time(NULL);
+			}
+			printf("ending at : %s", ctime(&start));
+			return 0;
+
+		} else {
+
+			while (1) {
+				send_packet(0);
+			}
 		}
 	}
 

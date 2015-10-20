@@ -36,9 +36,10 @@ enum {	OPT_COUNT, OPT_INTERVAL, OPT_NUMERIC, OPT_QUIET, OPT_INTERFACE,
 	OPT_ICMP_IPSRC, OPT_ICMP_IPDST, OPT_ICMP_SRCPORT, OPT_ICMP_DSTPORT,
 	OPT_ICMP_GW, OPT_FORCE_ICMP, OPT_APD_SEND, OPT_SCAN, OPT_FASTER,
 	OPT_BEEP, OPT_FLOOD, OPT_CLOCK_SKEW, OPT_CS_WINDOW, OPT_CS_WINDOW_SHIFT,
-        OPT_CS_VECTOR_LEN };
+        OPT_CS_VECTOR_LEN, OPT_DURATION };
 
 static struct ago_optlist hping_optlist[] = {
+	{ 'd',	"duration",	OPT_DURATION,		AGO_NEEDARG },
 	{ 'c',	"count",	OPT_COUNT,		AGO_NEEDARG },
 	{ 'i',	"interval",	OPT_INTERVAL,		AGO_NEEDARG|AGO_EXCEPT0 },
 	{ 'n',	"numeric",	OPT_NUMERIC,		AGO_NOARG },
@@ -232,6 +233,9 @@ int parse_options(int argc, char **argv)
 				strlcpy(targetname, ago_optarg, 1024);
 				targethost_set = 1;
 			}
+			break;
+		case OPT_DURATION:
+			duration = strtol(ago_optarg, NULL, 0);
 			break;
 		case OPT_COUNT:
 			count = strtol(ago_optarg, NULL, 0);
@@ -605,6 +609,10 @@ int parse_options(int argc, char **argv)
 	if (data_size+IPHDR_SIZE+TCPHDR_SIZE > 65535) {
 		printf("Option error: sorry, data size must be <= %lu\n",
 			(unsigned long)(65535-IPHDR_SIZE+TCPHDR_SIZE));
+		exit(1);
+	}
+	else if (duration <= 0 && duration != -1) {
+		printf("Option error: duration must > 0\n");
 		exit(1);
 	}
 	else if (count <= 0 && count != -1) {
